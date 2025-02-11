@@ -1,13 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
+<h1>@ViewBag.Message</h1>
 <form asp-action="Index">
+  <label>Person Id</label>
+  <input type="text" name='PersonId'>
   <label>Input your name</label>
   <input type="text" name='FullName'>
-  <label>Input your address</label>
+  <label>Address</label>
   <input type="text" name='Address'>
   <button>Submit</button>
 </form>
-
-<h1>@ViewBag.Message</h1>

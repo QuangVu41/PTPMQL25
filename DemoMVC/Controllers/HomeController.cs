@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using FirstWebMVC.Models;
 
 namespace FirstWebMVC.Controllers;
-
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -18,6 +17,14 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpPost]
+    public IActionResult Index(string FullName, string Address)
+    {
+        string output = $"Hello my name is {FullName} and I come from {Address}";
+        ViewBag.Message = output;
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
@@ -29,3 +36,5 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
+
+
