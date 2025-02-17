@@ -1,0 +1,19 @@
+@model DemoMVC.Models.Invoice;
+
+<form method='post'>
+  <div class="container border p-4">
+    <h2 class='mb-4'>Your Component Grades</h2>
+    <p class='mt-2 badge bg-info form-control fs-4 p-4'>@ViewBag.Message</p>
+    <div class="row">
+      <div class="col-2 form-group">
+        <label class='mb-1' for="Price">Price</label>
+        <input asp-for="Price" class='form-control fs-4'>
+      </div>
+      <div class="col-2 form-group">
+        <label class='mb-1' for="Quantity">Quantity</label>
+        <input asp-for='Quantity' class='form-control fs-4'>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Calculate</button>
+  </div>
+</form>

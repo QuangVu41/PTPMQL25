@@ -1,0 +1,23 @@
+@model DemoMVC.Models.ComponentGrades;
+
+<form method='post'>
+  <div class="container border p-4">
+    <h2 class='mb-4'>Your Component Grades</h2>
+    <p class='mt-2 badge bg-info form-control fs-4 p-4'>@ViewBag.Message</p>
+    <div class="row">
+      <div class="col-2 form-group">
+        <label class='mb-1' for="a">A</label>
+        <input asp-for="A" class='form-control fs-4'>
+      </div>
+      <div class="col-2 form-group">
+        <label class='mb-1' for="b">B</label>
+        <input asp-for='B' class='form-control fs-4'>
+      </div>
+      <div class="col-2 form-group">
+        <label class='mb-1' for="c">C</label>
+        <input asp-for='C' class='form-control fs-4'>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Calculate</button>
+  </div>
+</form>

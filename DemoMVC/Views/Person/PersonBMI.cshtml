@@ -1,0 +1,17 @@
+@model DemoMVC.Models.Person
+
+<form method='post'>
+  <div class="container border p-4">
+    <h2 class='mb-4'>Calculate BMI</h2>
+    <p class='mt-2 badge bg-info form-control fs-4 p-4'>@ViewBag.Message</p>
+    <div class="form-group">
+      <label class='mb-1' for="height">Height (cm):</label>
+      <input asp-for="Height" class='form-control fs-4'>
+    </div>
+    <div class="form-group">
+      <label class='mb-1' for="weight">Weight (cm):</label>
+      <input asp-for='Weight' class='form-control fs-4'>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Calculate</button>
+  </div>
+</form>
