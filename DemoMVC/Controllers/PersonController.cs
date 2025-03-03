@@ -22,34 +22,22 @@ public class PersonController : Controller
     return View(persons);
   }
 
-  [HttpPost]
-  public IActionResult Index(Person person)
-  {
-    string output = $"Hello {person.PersonId} {person.FullName} {person.Address}";
-    ViewBag.Message = output;
-    return View();
-  }
-
   public IActionResult Create()
   {
     return View();
   }
 
   [HttpPost]
-  public async Task<IActionResult> Create([Bind("PersonId, FullName, Address")] Person person)
+  public async Task<IActionResult> Create([Bind("PersonId, FullName, Address, Height, Weight")] Person person)
   {
-    // if (ModelState.IsValid)
-    // {
     await _context.Persons.AddAsync(person);
     await _context.SaveChangesAsync();
     return RedirectToAction("Index");
-    // }
-    // return View(person);
   }
 
-  public async Task<IActionResult> Edit(string id)
+  public async Task<IActionResult> Edit(int id)
   {
-    if (id == null || _context.Persons == null)
+    if (id == 0 || _context.Persons == null)
       return NotFound();
 
     var person = await _context.Persons.FindAsync(id);
@@ -60,23 +48,42 @@ public class PersonController : Controller
   }
 
   [HttpPost]
-  public async Task<IActionResult> Edit([Bind("PersonId, FullName, Address")] Person person)
+  public async Task<IActionResult> Edit(int id, [Bind("PersonId, FullName, Address, Height, Weight")] Person person)
   {
-    if (person.PersonId == null) return NotFound();
+    if (person.PersonId == 0) return NotFound();
 
-    if (ModelState.IsValid)
-    {
-      var personObj = await _context.Persons.FindAsync(person.PersonId);
+    if (!PersonExists(person.PersonId)) return NotFound();
 
-      if (personObj == null) return NotFound();
+    _context.Update(person);
+    await _context.SaveChangesAsync();
 
-      _context.Update(person);
-      await _context.SaveChangesAsync();
+    return RedirectToAction("Index");
+  }
 
-      return RedirectToAction("Index");
-    }
+  public async Task<IActionResult> Delete(int id)
+  {
+    if (id == 0 || _context.Persons == null)
+      return NotFound();
+
+    var person = await _context.Persons.FindAsync(id);
+
+    if (person == null) return NotFound();
 
     return View(person);
+  }
+
+  [HttpPost, ActionName("Delete")]
+  public async Task<IActionResult> DeleteAction(int id)
+  {
+    if (_context.Persons == null) return Problem("Have no users in the database");
+
+    var person = await _context.Persons.FindAsync(id);
+
+    if (person != null) _context.Persons.Remove(person);
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction("Index");
   }
 
   public IActionResult PersonInfo()
@@ -102,5 +109,10 @@ public class PersonController : Controller
 
     ViewBag.Message = $"Your BMI is {bmiStr}({bmi?.ToString("0.00")})";
     return View();
+  }
+
+  private bool PersonExists(int id)
+  {
+    return (_context.Persons?.Any(p => p.PersonId == id)).GetValueOrDefault();
   }
 }
