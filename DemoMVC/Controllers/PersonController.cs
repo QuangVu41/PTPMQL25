@@ -2,6 +2,7 @@ using DemoMVC.Data;
 using DemoMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace DemoMVC.Controllers;
 
@@ -108,6 +109,40 @@ public class PersonController : Controller
     else if (bmi >= 30) bmiStr = "Obesity";
 
     ViewBag.Message = $"Your BMI is {bmiStr}({bmi?.ToString("0.00")})";
+    return View();
+  }
+
+  public async Task<IActionResult> Upload()
+  {
+    return View();
+  }
+
+  [HttpPost]
+  public async Task<IActionResult> Upload(IFormFile file)
+  {
+    if (file != null)
+    {
+      string fileExt = Path.GetExtension(file.FileName);
+      if (fileExt != ".xls" || fileExt != ".xlsx")
+      {
+        ModelState.AddModelError("", "Excel file is invalid!");
+      }
+      else
+      {
+        var fileName = DateTime.Now.ToShortTimeString() + fileExt;
+        var filePath = Path.Combine($"{Directory.GetCurrentDirectory()}/Uploads/Excels", fileName);
+        var fileLocation = new FileInfo(filePath).ToString();
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+          await file.CopyToAsync(stream);
+        }
+        using (var package = new ExcelPackage(new FileInfo(filePath)))
+        {
+          ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+          var dataTable = worksheet.Cells["A1:C11"].ToDataTable();
+        }
+      }
+    }
     return View();
   }
 

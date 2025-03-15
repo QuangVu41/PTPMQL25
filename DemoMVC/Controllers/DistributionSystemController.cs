@@ -10,85 +10,85 @@ using DemoMVC.Models;
 
 namespace FirstWebMVC.Controllers
 {
-    public class EmployeeController : Controller
+    public class DistributionSystemController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public EmployeeController(ApplicationDbContext context)
+        public DistributionSystemController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Employee
+        // GET: DistributionSystem
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            return View(await _context.DistributionSystems.ToListAsync());
         }
 
-        // GET: Employee/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: DistributionSystem/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (employee == null)
+            var distributionSystem = await _context.DistributionSystems
+                .FirstOrDefaultAsync(m => m.DistributionSystemId == id);
+            if (distributionSystem == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(distributionSystem);
         }
 
-        // GET: Employee/Create
+        // GET: DistributionSystem/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Employee/Create
+        // POST: DistributionSystem/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,Age,PersonId,FullName,Address,Height,Weight")] Employee employee)
+        public async Task<IActionResult> Create([Bind("DistributionSystemId,Name")] DistributionSystem distributionSystem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                _context.Add(distributionSystem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(distributionSystem);
         }
 
-        // GET: Employee/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: DistributionSystem/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var distributionSystem = await _context.DistributionSystems.FindAsync(id);
+            if (distributionSystem == null)
             {
                 return NotFound();
             }
-            return View(employee);
+            return View(distributionSystem);
         }
 
-        // POST: Employee/Edit/5
+        // POST: DistributionSystem/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,Age,PersonId,FullName,Address,Height,Weight")] Employee employee)
+        public async Task<IActionResult> Edit(string id, [Bind("DistributionSystemId,Name")] DistributionSystem distributionSystem)
         {
-            if (id != employee.PersonId)
+            if (id != distributionSystem.DistributionSystemId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace FirstWebMVC.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    _context.Update(distributionSystem);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.PersonId))
+                    if (!DistributionSystemExists(distributionSystem.DistributionSystemId))
                     {
                         return NotFound();
                     }
@@ -113,45 +113,45 @@ namespace FirstWebMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(distributionSystem);
         }
 
-        // GET: Employee/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: DistributionSystem/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (employee == null)
+            var distributionSystem = await _context.DistributionSystems
+                .FirstOrDefaultAsync(m => m.DistributionSystemId == id);
+            if (distributionSystem == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(distributionSystem);
         }
 
-        // POST: Employee/Delete/5
+        // POST: DistributionSystem/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee != null)
+            var distributionSystem = await _context.DistributionSystems.FindAsync(id);
+            if (distributionSystem != null)
             {
-                _context.Employees.Remove(employee);
+                _context.DistributionSystems.Remove(distributionSystem);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool DistributionSystemExists(string id)
         {
-            return _context.Employees.Any(e => e.PersonId == id);
+            return _context.DistributionSystems.Any(e => e.DistributionSystemId == id);
         }
     }
 }

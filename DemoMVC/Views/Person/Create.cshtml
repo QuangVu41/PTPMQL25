@@ -1,5 +1,12 @@
 @model DemoMVC.Models.Person
-
+<form asp-action="Upload" enctype='multipart/form-data'>
+  <div asp-validation-summary="None" class='text-danger'></div>
+  <div class="row form-control">
+    <label class='col-sm-2'>Import data form Excel</label>
+    <input type="file" name="file" class='col-sm-4'>
+    <button class='btn btn-primary mt-2'>Upload</button>
+  </div>
+</form>
 <form method='post'>
   <div class="container border p-4">
     <h2 class='mb-4'>Create Person</h2>

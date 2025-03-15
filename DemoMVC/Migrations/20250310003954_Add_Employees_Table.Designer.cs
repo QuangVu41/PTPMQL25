@@ -2,6 +2,7 @@
 using DemoMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FirstWebMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250310003954_Add_Employees_Table")]
+    partial class Add_Employees_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,29 +23,6 @@ namespace FirstWebMVC.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("DemoMVC.Models.DistributionSystem", b =>
-                {
-                    b.Property<string>("DistributionSystemId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("character varying(21)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("DistributionSystemId");
-
-                    b.ToTable("DistributionSystems");
-
-                    b.HasDiscriminator().HasValue("DistributionSystem");
-
-                    b.UseTphMappingStrategy();
-                });
 
             modelBuilder.Entity("DemoMVC.Models.Person", b =>
                 {
@@ -78,29 +58,6 @@ namespace FirstWebMVC.Migrations
                     b.HasDiscriminator().HasValue("Person");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("DemoMVC.Models.Agency", b =>
-                {
-                    b.HasBaseType("DemoMVC.Models.DistributionSystem");
-
-                    b.Property<string>("AgencyId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("AgencyName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Agent")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("Agency");
                 });
 
             modelBuilder.Entity("DemoMVC.Models.Employee", b =>

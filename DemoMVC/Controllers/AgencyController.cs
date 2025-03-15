@@ -10,85 +10,85 @@ using DemoMVC.Models;
 
 namespace FirstWebMVC.Controllers
 {
-    public class EmployeeController : Controller
+    public class AgencyController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public EmployeeController(ApplicationDbContext context)
+        public AgencyController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Employee
+        // GET: Agency
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            return View(await _context.Agencies.ToListAsync());
         }
 
-        // GET: Employee/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Agency/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (employee == null)
+            var agency = await _context.Agencies
+                .FirstOrDefaultAsync(m => m.DistributionSystemId == id);
+            if (agency == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(agency);
         }
 
-        // GET: Employee/Create
+        // GET: Agency/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Employee/Create
+        // POST: Agency/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,Age,PersonId,FullName,Address,Height,Weight")] Employee employee)
+        public async Task<IActionResult> Create([Bind("AgencyId,AgencyName,Agent,Phone,DistributionSystemId,Name")] Agency agency)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                _context.Add(agency);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(agency);
         }
 
-        // GET: Employee/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Agency/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var agency = await _context.Agencies.FindAsync(id);
+            if (agency == null)
             {
                 return NotFound();
             }
-            return View(employee);
+            return View(agency);
         }
 
-        // POST: Employee/Edit/5
+        // POST: Agency/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,Age,PersonId,FullName,Address,Height,Weight")] Employee employee)
+        public async Task<IActionResult> Edit(string id, [Bind("AgencyId,AgencyName,Agent,Phone,DistributionSystemId,Name")] Agency agency)
         {
-            if (id != employee.PersonId)
+            if (id != agency.DistributionSystemId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace FirstWebMVC.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    _context.Update(agency);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.PersonId))
+                    if (!AgencyExists(agency.DistributionSystemId))
                     {
                         return NotFound();
                     }
@@ -113,45 +113,45 @@ namespace FirstWebMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(agency);
         }
 
-        // GET: Employee/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Agency/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (employee == null)
+            var agency = await _context.Agencies
+                .FirstOrDefaultAsync(m => m.DistributionSystemId == id);
+            if (agency == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(agency);
         }
 
-        // POST: Employee/Delete/5
+        // POST: Agency/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee != null)
+            var agency = await _context.Agencies.FindAsync(id);
+            if (agency != null)
             {
-                _context.Employees.Remove(employee);
+                _context.Agencies.Remove(agency);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool AgencyExists(string id)
         {
-            return _context.Employees.Any(e => e.PersonId == id);
+            return _context.Agencies.Any(e => e.DistributionSystemId == id);
         }
     }
 }
