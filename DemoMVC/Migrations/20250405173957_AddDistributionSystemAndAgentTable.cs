@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace FirstWebMVC.Migrations
+namespace DemoMVC.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAgencyAndDistributionSystem : Migration
+    public partial class AddDistributionSystemAndAgentTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +17,10 @@ namespace FirstWebMVC.Migrations
                     DistributionSystemId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
-                    AgencyId = table.Column<string>(type: "text", nullable: true),
-                    AgencyName = table.Column<string>(type: "text", nullable: true),
-                    Agent = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: true)
+                    AgentId = table.Column<string>(type: "text", nullable: true),
+                    AgentName = table.Column<string>(type: "text", nullable: true),
+                    Rep = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

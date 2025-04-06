@@ -1,10 +1,11 @@
 @model DemoMVC.Models.Person
-<form asp-action="Upload" enctype='multipart/form-data'>
+<form asp-action="Upload" asp-controller="Person" method='post' enctype='multipart/form-data'
+  class='border p-2 mb-2 w-25'>
   <div asp-validation-summary="None" class='text-danger'></div>
-  <div class="row form-control">
-    <label class='col-sm-2'>Import data form Excel</label>
-    <input type="file" name="file" class='col-sm-4'>
-    <button class='btn btn-primary mt-2'>Upload</button>
+  <div class="d-flex flex-column align-items-start">
+    <label class='mb-2'>Import data from Excel</label>
+    <input class='border p-2' id='FileInput' type="file" name="file">
+    <input type='submit' class='btn btn-primary mt-2 w-100' value='Upload' />
   </div>
 </form>
 <form method='post'>

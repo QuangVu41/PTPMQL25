@@ -1,4 +1,4 @@
-@model DemoMVC.Models.Agency
+@model DemoMVC.Models.Agent
 
 @{
     ViewData["Title"] = "Details";
@@ -7,32 +7,32 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Agency</h4>
+    <h4>Agent</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AgencyId)
+            @Html.DisplayNameFor(model => model.AgentId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AgencyId)
+            @Html.DisplayFor(model => model.AgentId)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AgencyName)
+            @Html.DisplayNameFor(model => model.AgentName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AgencyName)
+            @Html.DisplayFor(model => model.AgentName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Agent)
+            @Html.DisplayNameFor(model => model.Rep)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Agent)
+            @Html.DisplayFor(model => model.Rep)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
+            @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
+            @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)

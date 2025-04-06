@@ -1,5 +1,6 @@
 using DemoMVC.Data;
 using DemoMVC.Models;
+using DemoMVC.Models.Process;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -8,6 +9,7 @@ namespace DemoMVC.Controllers;
 
 public class PersonController : Controller
 {
+  private readonly ExcelProcess _excelProcess = new ExcelProcess();
 
   private readonly ApplicationDbContext _context;
 
@@ -118,32 +120,70 @@ public class PersonController : Controller
   }
 
   [HttpPost]
+  [ValidateAntiForgeryToken]
   public async Task<IActionResult> Upload(IFormFile file)
   {
+    if (file == null)
+    {
+      ModelState.AddModelError("Model", "Please select an Excel file!");
+      return View();
+    }
     if (file != null)
     {
       string fileExt = Path.GetExtension(file.FileName);
-      if (fileExt != ".xls" || fileExt != ".xlsx")
+      if (fileExt != ".xls" && fileExt != ".xlsx")
       {
         ModelState.AddModelError("", "Excel file is invalid!");
       }
       else
       {
-        var fileName = DateTime.Now.ToShortTimeString() + fileExt;
+        var fileName = "persons-" + DateTime.Now.Millisecond + fileExt;
+        Console.WriteLine(fileName);
         var filePath = Path.Combine($"{Directory.GetCurrentDirectory()}/Uploads/Excels", fileName);
         var fileLocation = new FileInfo(filePath).ToString();
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
           await file.CopyToAsync(stream);
-        }
-        using (var package = new ExcelPackage(new FileInfo(filePath)))
-        {
-          ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-          var dataTable = worksheet.Cells["A1:C11"].ToDataTable();
+
+          var dt = _excelProcess.ExcelToDataTable(fileLocation);
+
+          for (int i = 0; i < dt.Rows.Count; i++)
+          {
+            var person = new Person();
+            person.PersonId = Convert.ToInt32(dt.Rows[i][0]);
+            person.FullName = dt.Rows[i][1].ToString();
+            person.Address = dt.Rows[i][2].ToString();
+            person.Height = Convert.ToDouble(dt.Rows[i][3]);
+            person.Weight = Convert.ToDouble(dt.Rows[i][4]);
+            _context.Add(person);
+          }
+          await _context.SaveChangesAsync();
+          return RedirectToAction("Index");
         }
       }
     }
+
     return View();
+  }
+
+  public IActionResult Download()
+  {
+    var fileName = "persons-" + DateTime.Now.Millisecond + ".xlsx";
+    using (ExcelPackage excelPackage = new ExcelPackage())
+    {
+      ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Persons");
+      worksheet.Cells["A1"].Value = "PersonId";
+      worksheet.Cells["B1"].Value = "FullName";
+      worksheet.Cells["C1"].Value = "Address";
+      worksheet.Cells["D1"].Value = "Height";
+      worksheet.Cells["E1"].Value = "Weight";
+
+      var persons = _context.Persons.ToList();
+      worksheet.Cells["A2"].LoadFromCollection(persons);
+
+      var stream = new MemoryStream(excelPackage.GetAsByteArray());
+      return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+    }
   }
 
   private bool PersonExists(int id)

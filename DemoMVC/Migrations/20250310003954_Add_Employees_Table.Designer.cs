@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FirstWebMVC.Migrations
+namespace DemoMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250310003954_Add_Employees_Table")]

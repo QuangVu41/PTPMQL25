@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DemoMVC.Data;
 using DemoMVC.Models;
 
-namespace FirstWebMVC.Controllers
+namespace DemoMVC.Controllers
 {
     public class DistributionSystemController : Controller
     {

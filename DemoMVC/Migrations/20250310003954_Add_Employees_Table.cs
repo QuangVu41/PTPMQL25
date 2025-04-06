@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace FirstWebMVC.Migrations
+namespace DemoMVC.Migrations
 {
     /// <inheritdoc />
     public partial class Add_Employees_Table : Migration

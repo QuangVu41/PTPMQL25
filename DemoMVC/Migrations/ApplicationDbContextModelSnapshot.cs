@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FirstWebMVC.Migrations
+namespace DemoMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -80,27 +80,27 @@ namespace FirstWebMVC.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("DemoMVC.Models.Agency", b =>
+            modelBuilder.Entity("DemoMVC.Models.Agent", b =>
                 {
                     b.HasBaseType("DemoMVC.Models.DistributionSystem");
 
-                    b.Property<string>("AgencyId")
+                    b.Property<string>("AgentId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("AgencyName")
+                    b.Property<string>("AgentName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Agent")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("Rep")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasDiscriminator().HasValue("Agency");
+                    b.HasDiscriminator().HasValue("Agent");
                 });
 
             modelBuilder.Entity("DemoMVC.Models.Employee", b =>

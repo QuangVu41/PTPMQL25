@@ -1,4 +1,5 @@
 using DemoMVC.Data;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string is not found!"));
+});
+builder.Services.Configure<FormOptions>(options =>
+{
+    // Set overall form limit - 50MB
+    options.MultipartBodyLengthLimit = 52428800;
+
+    // Buffer limit
+    options.MultipartHeadersLengthLimit = 32768;
+
+    // Value count limit - how many form values are allowed
+    options.ValueCountLimit = 10240;
 });
 
 var app = builder.Build();

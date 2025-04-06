@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FirstWebMVC.Migrations
+namespace DemoMVC.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

@@ -9,6 +9,6 @@ public class ApplicationDbContext : DbContext
 
   public DbSet<Person> Persons { get; set; }
   public DbSet<Employee> Employees { get; set; }
-  public DbSet<Agency> Agencies { get; set; }
+  public DbSet<Agent> Agents { get; set; }
   public DbSet<DistributionSystem> DistributionSystems { get; set; }
 }
