@@ -1,4 +1,4 @@
-@model IEnumerable<DemoMVC.Models.Agent>
+@model IEnumerable<DemoMVC.Models.Agency>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AgentId)
+                @Html.DisplayNameFor(model => model.AgencyId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AgentName)
+                @Html.DisplayNameFor(model => model.AgencyName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rep)
@@ -34,10 +34,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.AgentId)
+                @Html.DisplayFor(modelItem => item.AgencyId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AgentName)
+                @Html.DisplayFor(modelItem => item.AgencyName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Rep)

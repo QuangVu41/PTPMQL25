@@ -1,26 +1,29 @@
 using DemoMVC.Data;
+using DemoMVC.Models;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string is not found!"));
 });
-builder.Services.Configure<FormOptions>(options =>
-{
-    // Set overall form limit - 50MB
-    options.MultipartBodyLengthLimit = 52428800;
+// builder.Services.Configure<FormOptions>(options =>
+// {
+//     // Set overall form limit - 50MB
+//     options.MultipartBodyLengthLimit = 52428800;
 
-    // Buffer limit
-    options.MultipartHeadersLengthLimit = 32768;
+//     // Buffer limit
+//     options.MultipartHeadersLengthLimit = 32768;
 
-    // Value count limit - how many form values are allowed
-    options.ValueCountLimit = 10240;
-});
+//     // Value count limit - how many form values are allowed
+//     options.ValueCountLimit = 10240;
+// });
 
 var app = builder.Build();
 
@@ -44,5 +47,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+app.MapRazorPages();
 
 app.Run();

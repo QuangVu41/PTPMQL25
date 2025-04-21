@@ -1,7 +1,9 @@
 using DemoMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoMVC.Controllers;
+[Authorize]
 public class StudentController : Controller
 {
   public IActionResult Index()

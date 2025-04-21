@@ -1,12 +1,13 @@
 using DemoMVC.Data;
 using DemoMVC.Models;
 using DemoMVC.Models.Process;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 
 namespace DemoMVC.Controllers;
-
+[Authorize]
 public class PersonController : Controller
 {
   private readonly ExcelProcess _excelProcess = new ExcelProcess();

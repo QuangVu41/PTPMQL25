@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoMVC.Data;
 using DemoMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DemoMVC.Controllers
 {
+    [Authorize]
     public class DistributionSystemController : Controller
     {
         private readonly ApplicationDbContext _context;

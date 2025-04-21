@@ -7,25 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoMVC.Data;
 using DemoMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DemoMVC.Controllers
 {
-    public class AgentController : Controller
+    [Authorize]
+    public class AgencyController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AgentController(ApplicationDbContext context)
+        public AgencyController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Agent
+        // GET: Agency
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Agents.ToListAsync());
+            return View(await _context.Agencies.ToListAsync());
         }
 
-        // GET: Agent/Details/5
+        // GET: Agency/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -33,39 +35,39 @@ namespace DemoMVC.Controllers
                 return NotFound();
             }
 
-            var agent = await _context.Agents
+            var agency = await _context.Agencies
                 .FirstOrDefaultAsync(m => m.DistributionSystemId == id);
-            if (agent == null)
+            if (agency == null)
             {
                 return NotFound();
             }
 
-            return View(agent);
+            return View(agency);
         }
 
-        // GET: Agent/Create
+        // GET: Agency/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Agent/Create
+        // POST: Agency/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AgentId,AgentName,Rep,PhoneNumber,DistributionSystemId,Name")] Agent agent)
+        public async Task<IActionResult> Create([Bind("AgencyId,AgencyName,Rep,PhoneNumber,DistributionSystemId,Name")] Agency agency)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(agent);
+                _context.Add(agency);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(agent);
+            return View(agency);
         }
 
-        // GET: Agent/Edit/5
+        // GET: Agency/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -73,22 +75,22 @@ namespace DemoMVC.Controllers
                 return NotFound();
             }
 
-            var agent = await _context.Agents.FindAsync(id);
-            if (agent == null)
+            var agency = await _context.Agencies.FindAsync(id);
+            if (agency == null)
             {
                 return NotFound();
             }
-            return View(agent);
+            return View(agency);
         }
 
-        // POST: Agent/Edit/5
+        // POST: Agency/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("AgentId,AgentName,Rep,PhoneNumber,DistributionSystemId,Name")] Agent agent)
+        public async Task<IActionResult> Edit(string id, [Bind("AgencyId,AgencyName,Rep,PhoneNumber,DistributionSystemId,Name")] Agency agency)
         {
-            if (id != agent.DistributionSystemId)
+            if (id != agency.DistributionSystemId)
             {
                 return NotFound();
             }
@@ -97,12 +99,12 @@ namespace DemoMVC.Controllers
             {
                 try
                 {
-                    _context.Update(agent);
+                    _context.Update(agency);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AgentExists(agent.DistributionSystemId))
+                    if (!AgencyExists(agency.DistributionSystemId))
                     {
                         return NotFound();
                     }
@@ -113,10 +115,10 @@ namespace DemoMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(agent);
+            return View(agency);
         }
 
-        // GET: Agent/Delete/5
+        // GET: Agency/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -124,34 +126,34 @@ namespace DemoMVC.Controllers
                 return NotFound();
             }
 
-            var agent = await _context.Agents
+            var agency = await _context.Agencies
                 .FirstOrDefaultAsync(m => m.DistributionSystemId == id);
-            if (agent == null)
+            if (agency == null)
             {
                 return NotFound();
             }
 
-            return View(agent);
+            return View(agency);
         }
 
-        // POST: Agent/Delete/5
+        // POST: Agency/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var agent = await _context.Agents.FindAsync(id);
-            if (agent != null)
+            var agency = await _context.Agencies.FindAsync(id);
+            if (agency != null)
             {
-                _context.Agents.Remove(agent);
+                _context.Agencies.Remove(agency);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AgentExists(string id)
+        private bool AgencyExists(string id)
         {
-            return _context.Agents.Any(e => e.DistributionSystemId == id);
+            return _context.Agencies.Any(e => e.DistributionSystemId == id);
         }
     }
 }
