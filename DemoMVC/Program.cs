@@ -7,14 +7,31 @@ using VicemMVCIdentity.Models.Process;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+// builder.Services.AddTransient<WorkerSeeder>();
+
 builder.Services.AddOptions();
+
 var mailSettings = builder.Configuration.GetSection("MailSettings");
 builder.Services.Configure<MailSettings>(mailSettings);
 builder.Services.AddTransient<IEmailSender, SendMailService>();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddRazorPages();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+}).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Role", policy => policy.RequireClaim("Role", "AdminOnly"));
+    options.AddPolicy("Permission", policy => policy.RequireClaim("Role", "EmployeeOnly"));
+});
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Lockout settings
@@ -40,10 +57,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // For production use only
     options.Cookie.SameSite = SameSiteMode.Lax; // For production use only
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
     options.SlidingExpiration = true;
 });
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string is not found!"));
@@ -61,6 +80,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // });
 
 var app = builder.Build();
+
+// using (var scope = app.Services.CreateAsyncScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var seeder = services.GetRequiredService<WorkerSeeder>();
+//     seeder.SeedWorkers(100);
+// }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -85,3 +111,6 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+// dotnet aspnet-codegenerator controller -name YourController -m 
+// YourModel -dc YourNamespce.ApplicationDbContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries --databaseProvider sqlite
